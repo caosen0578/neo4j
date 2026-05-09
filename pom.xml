@@ -19,6 +19,7 @@
 
     <properties>
         <java.version>17</java.version>
+        <apollo.version>2.3.0</apollo.version>
     </properties>
 
     <dependencies>
@@ -26,6 +27,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- ===== Apollo 配置中心 ===== -->
+        <dependency>
+            <groupId>com.ctrip.framework.apollo</groupId>
+            <artifactId>apollo-client</artifactId>
+            <version>${apollo.version}</version>
         </dependency>
 
         <!-- ===== Neo4j JDBC Bolt Driver ===== -->

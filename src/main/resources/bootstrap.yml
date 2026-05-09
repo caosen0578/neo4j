@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: neo4j-service
+
+# namespace 名称，与业务代码 @Value("${datasource.namespace:neo4j_datasource_config}") 保持一致
+datasource:
+  namespace: neo4j_datasource_config
+
+app:
+  id: neo4j-service
+apollo:
+  meta: ${APOLLO_META:http://127.0.0.1:8080}
+  bootstrap:
+    enabled: true
+    namespaces: application,${datasource.namespace:neo4j_datasource_config}
+    eagerLoad:
+      enabled: true

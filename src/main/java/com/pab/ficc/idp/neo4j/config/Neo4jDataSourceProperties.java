@@ -1,12 +1,8 @@
 package com.pab.ficc.idp.neo4j.config;
 
 import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 @Data
-@Component
-@ConfigurationProperties(prefix = "neo4j.datasource")
 public class Neo4jDataSourceProperties {
 
     private String url;

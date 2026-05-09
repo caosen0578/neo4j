@@ -2,7 +2,6 @@ package com.pab.ficc.idp.neo4j.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidDataSourceStatValue;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.actuate.health.Health;
@@ -16,21 +15,21 @@ import java.sql.Statement;
 
 /**
  * Neo4j 数据源健康检查，暴露到 /actuator/health。
- * <p>
- * 检查内容：
- * 1. 执行 {@code RETURN 1} 验证 Neo4j 服务可达
- * 2. 上报 Druid 连接池关键指标（active / idle / wait）
+ * health key 为 "neo4j"（Actuator 取类名去掉 HealthIndicator 后缀）
  */
 @Slf4j
-@Component("neo4jDataSource")   // Actuator 会以 Bean 名拼接生成 health key: neo4jDataSource
-@RequiredArgsConstructor
+@Component
 public class Neo4jHealthIndicator implements HealthIndicator {
 
     private static final String PING_CYPHER = "RETURN 1";
     private static final int PING_TIMEOUT_SECONDS = 3;
 
-    @Qualifier("neo4jDataSource")
     private final DataSource dataSource;
+
+    // @Qualifier 必须加在构造器参数上，@RequiredArgsConstructor 不支持字段级 @Qualifier
+    public Neo4jHealthIndicator(@Qualifier("neo4jDataSource") DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Override
     public Health health() {
@@ -39,7 +38,7 @@ public class Neo4jHealthIndicator implements HealthIndicator {
 
             stmt.setQueryTimeout(PING_TIMEOUT_SECONDS);
             try (ResultSet rs = stmt.executeQuery(PING_CYPHER)) {
-                rs.next(); // 正常情况下一定有一行
+                rs.next();
             }
 
             Health.Builder builder = Health.up();

@@ -1,0 +1,37 @@
+# ============================================================
+# application.yml
+# 后期投产时将 neo4j.datasource 整段迁移到 Apollo 即可，代码无需改动
+# ============================================================
+server:
+  port: 8081
+
+neo4j:
+  datasource:
+    url: jdbc:neo4j:bolt://192.168.10.99:7687
+    username: neo4j
+    password: 123456
+    druid:
+      initial-size: 2
+      min-idle: 2
+      max-active: 10
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      test-while-idle: true
+      test-on-borrow: false
+      keep-alive: true
+      keep-alive-between-time-millis: 120000
+      break-after-acquire-failure: false
+      connection-error-retry-attempts: 3
+      time-between-connect-error-millis: 500
+      stat-enable: true
+      slow-sql-millis: 3000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
